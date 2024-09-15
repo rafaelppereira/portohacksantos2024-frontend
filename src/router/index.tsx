@@ -4,17 +4,12 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { Home } from "../pages/home";
-import { Infos } from "../pages/infos";
 
 const router: any = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/infos",
-    element: <Infos />,
-  },
+  }
 ]);
 
 export { router };

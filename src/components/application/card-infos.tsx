@@ -21,15 +21,15 @@ interface CardInfoProps {
 export function CardInfos({ infoCard }: CardInfoProps) {
   return (
     <Card
-      className={`${infoCard.alterado && "border-yellow-300"} transition-all hover:scale-[.95]`}
+      className={`${infoCard.alterado && "border-yellow-300 border-2"} transition-all hover:scale-[.95]`}
     >
       <CardHeader>
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col items-start gap-2">
-            <CardTitle className="text-lg">
+            <CardTitle title={infoCard.arrivalNotice.shipName} className="text-md truncate w-32 text-left">
               {infoCard.arrivalNotice.shipName}
             </CardTitle>
-            <CardDescription className="text-zinc-300">
+            <CardDescription className="dark:text-zinc-300 text-zinc-500">
               {infoCard.arrivalNotice.RAP}
             </CardDescription>
           </div>

@@ -24,19 +24,19 @@ export function ThemeToggle() {
       <DropdownMenuContent align="end">
         <DropdownMenuItem
           onClick={() => setTheme('light')}
-          className={`${theme === 'light' && 'bg-primary text-white'}`}
+          className={`${theme === 'light' && 'bg-[#6C41CC] text-white'}`}
         >
           Claro
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme('dark')}
-          className={`${theme === 'dark' && 'bg-primary text-white'}`}
+          className={`${theme === 'dark' && 'bg-[#6C41CC] text-white'}`}
         >
           Escuro
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme('system')}
-          className={`${theme === 'system' && 'bg-primary text-white'}`}
+          className={`${theme === 'system' && 'bg-[#6C41CC] text-white'}`}
         >
           Sistema
         </DropdownMenuItem>

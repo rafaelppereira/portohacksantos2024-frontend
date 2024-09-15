@@ -71,7 +71,7 @@
     @apply border-border font-sans antialiased;
   }
   body {
-    @apply bg-zinc-950 text-foreground;
+    @apply bg-zinc-100 dark:bg-zinc-950 text-foreground;
   }
 }
 

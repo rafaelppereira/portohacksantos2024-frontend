@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { ChevronDown, LogOut } from "lucide-react";
 
+import { ThemeToggle } from "./theme/theme-toggle";
 import { Button } from "./ui/button";
 import { DatePicker } from "./ui/date-picker";
 import {
@@ -14,7 +15,7 @@ import {
 
 export function Header() {
   return (
-    <header className="w-full bg-zinc-900">
+    <header className="w-full dark:bg-zinc-900 bg-zinc-200 border-b">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-3">
         <div className="flex items-center gap-10">
           <figure>
@@ -33,6 +34,8 @@ export function Header() {
               <span className="text-xs">⌘ | ctrl +</span>K
             </kbd>
           </p>
+
+          <ThemeToggle />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="account-menu">
