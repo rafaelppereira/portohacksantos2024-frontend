@@ -28,14 +28,16 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-          <p className="pointer-events-none select-none text-sm text-muted-foreground">
+          <p className="hidden md:block pointer-events-none select-none text-sm text-muted-foreground">
             Pesquisar{" "}
             <kbd className="pointer-events-none ml-1 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
               <span className="text-xs">⌘ | ctrl +</span>K
             </kbd>
           </p>
 
-          <ThemeToggle />
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="account-menu">

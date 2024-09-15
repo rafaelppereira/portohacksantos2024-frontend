@@ -1,6 +1,6 @@
 'use client'
 
-import { TrendingUp } from 'lucide-react'
+import { TrendingUp, Waves } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Cell, LabelList } from 'recharts'
 
 import {
@@ -40,7 +40,12 @@ export function TideChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Nível de maré</CardTitle>
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <>
+            <Waves className="size-4" />
+            Alteração de maré - Alta/Baixa
+          </>
+        </CardTitle>
         <CardDescription>Análise de 1 semana de alteração</CardDescription>
       </CardHeader>
       <CardContent>

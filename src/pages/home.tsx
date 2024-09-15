@@ -2,7 +2,7 @@
 // import { format } from "date-fns";
 // import { ptBR } from "date-fns/locale";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, SearchIcon, X } from "lucide-react";
+import { File, Loader2, SearchIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
@@ -23,14 +23,26 @@ import {
   DialogTrigger,
 } from "../components/ui/dialog";
 import { Input } from "../components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 import { InfosCardProps } from "../utils/infos-card";
 
-// Esquema de validação Zod para os filtros
 const assistentFiltersSchema = z.object({
   name: z.string().optional(),
 });
 
-// Tipo inferido a partir do esquema de validação
 type AssistentFiltersSchema = z.infer<typeof assistentFiltersSchema>;
 
 export function Home() {
@@ -39,7 +51,6 @@ export function Home() {
 
   useEffect(() => {
     setHasLoadingTrafficData(true);
-    // Substitua pelo URL do seu servidor SSE
     const eventSource = new EventSource(
       "http://localhost:3333/v1/santosbrasil/traffic-range",
     );
@@ -55,7 +66,6 @@ export function Home() {
       console.error("Erro no SSE:", event);
     };
 
-    // Cleanup na desmontagem do componente
     return () => {
       eventSource.close();
     };
@@ -64,7 +74,6 @@ export function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const name = searchParams.get("name");
 
-  // Configuração do formulário com react-hook-form e Zod resolver
   const { register, handleSubmit, reset } = useForm<AssistentFiltersSchema>({
     resolver: zodResolver(assistentFiltersSchema),
     defaultValues: {
@@ -72,7 +81,6 @@ export function Home() {
     },
   });
 
-  // Função para aplicar os filtros
   function handleFilter({ name }: AssistentFiltersSchema) {
     setSearchParams((state) => {
       if (name) {
@@ -85,7 +93,6 @@ export function Home() {
     });
   }
 
-  // Função para limpar os filtros
   function handleClearFilters() {
     setSearchParams((state) => {
       state.delete("name");
@@ -102,18 +109,18 @@ export function Home() {
       <Header />
 
       <div className="mx-auto mt-10 max-w-6xl px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           <TideChart />
 
-          <WaveChart hasLoadingTrafficData={hasLoadingTrafficData} />
+          <WaveChart />
 
           <RadialBarGraph />
         </div>
 
-        <div className="mt-5 flex flex-col lg:flex-row items-center justify-between gap-5">
+        <div className="mt-5 flex flex-col items-center justify-between gap-5 lg:flex-row">
           <form
             onSubmit={handleSubmit(handleFilter)}
-            className="flex flex-col w-full items-center gap-2 lg:flex-row"
+            className="flex w-full flex-col items-center gap-2 lg:flex-row"
           >
             <span className="text-sm font-semibold">Filtros</span>
 
@@ -125,6 +132,7 @@ export function Home() {
 
             <Button
               size="xs"
+              disabled
               type="submit"
               className="w-full bg-violet-500 text-white hover:bg-violet-500/80 lg:w-auto"
             >
@@ -134,6 +142,7 @@ export function Home() {
 
             <Button
               size="xs"
+              disabled
               type="button"
               onClick={handleClearFilters}
               className="w-full bg-rose-500 text-white transition-all hover:bg-rose-500/80 lg:w-auto"
@@ -143,7 +152,7 @@ export function Home() {
             </Button>
           </form>
 
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2 whitespace-nowrap lg:flex-row">
             <div className="flex items-center gap-2">
               <h2 className="text-xs font-medium">Items atualizados:</h2>{" "}
               <div className="size-2 rounded-full bg-yellow-300" />
@@ -166,13 +175,13 @@ export function Home() {
             <Loader2 className="size-10 animate-spin" />
           </div>
         ) : (
-          <section className="grid min-h-screen grid-cols-1 md:grid-cols-2 lg:grid-cols-3 flex-col items-center justify-between gap-4 pt-5">
+          <section className="grid min-h-screen grid-cols-1 flex-col items-center justify-between gap-4 pt-5 md:grid-cols-2 lg:grid-cols-3">
             {trafficData.map((infos) => (
               <Dialog key={infos.id}>
                 <DialogTrigger>
                   <CardInfos infoCard={infos} />
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="w-full max-w-4xl overflow-x-auto">
                   <DialogHeader>
                     <DialogTitle>{infos.arrivalNotice.shipName}</DialogTitle>
                     <DialogDescription>
@@ -180,36 +189,82 @@ export function Home() {
                     </DialogDescription>
                   </DialogHeader>
 
-                  <h2 className="text-lg font-semibold">Aviso de chegada:</h2>
+                  <Tabs className="w-full" defaultValue="new">
+                    <TabsList className="w-full">
+                      <TabsTrigger value="old" className="w-full">
+                        Informação antiga
+                      </TabsTrigger>
+                      <TabsTrigger value="new" className="w-full">
+                        Informação atualizada
+                      </TabsTrigger>
+                    </TabsList>
 
-                  <div className="flex items-center justify-start gap-2 text-muted-foreground">
-                    <h2>IMO do navio:</h2>
-                    <p>{infos.arrivalNotice.IMO}</p>
-                  </div>
+                    <TabsContent value="old">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>
+                              Viagem (RAP)
+                            </TableHead>
+                            <TableHead>
+                              Código IMO
+                            </TableHead>
+                            <TableHead>
+                              Embarcação
+                            </TableHead>
+                            <TableHead>
+                              Previsão de chegada
+                            </TableHead>
+                            <TableHead>Tipo de escala</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>3994/2024</TableCell>
+                            <TableCell>9829681</TableCell>
+                            <TableCell>NITRO HUB</TableCell>
+                            <TableCell className="text-red-500">05/09/2024</TableCell>
+                            <TableCell>ATRACACAO</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </TabsContent>
+                    <TabsContent value="new">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>
+                              Viagem (RAP)
+                            </TableHead>
+                            <TableHead>
+                              Código IMO
+                            </TableHead>
+                            <TableHead>
+                              Embarcação
+                            </TableHead>
+                            <TableHead>
+                              Previsão de chegada
+                            </TableHead>
+                            <TableHead>Tipo de escala</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell>3994/2024</TableCell>
+                            <TableCell>9829681</TableCell>
+                            <TableCell>NITRO HUB</TableCell>
+                            <TableCell className="text-yellow-500">06/09/2024</TableCell>
+                            <TableCell>ATRACACAO</TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </TabsContent>
+                  </Tabs>
 
-                  <div className="flex items-center justify-start gap-2 text-muted-foreground">
-                    <h2 className="whitespace-nowrap">Data de chegada:</h2>
-                    <p>{infos.arrivalNotice.eta}</p>
-                  </div>
-
-                  <div className="flex items-center justify-start gap-2 text-muted-foreground">
-                    <h2>Hora de chegada:</h2>
-                    <p>{infos.arrivalNotice.eta}</p>
-                  </div>
-
-                  <div className="flex items-center justify-start gap-2 text-muted-foreground">
-                    <h2>Tipo de escala:</h2>
-                    <p>{infos.arrivalNotice.scaleType}</p>
-                  </div>
-
-                  <h2 className="mt-5 text-lg font-semibold">
-                    Atracação Prevista / Efetiva / Desatracação:
-                  </h2>
-
-                  <div className="flex items-center justify-start gap-2 text-muted-foreground">
-                    <h2>IMO do navio:</h2>
-                    {/* <p>{infos.forecast.}</p> */}
-                  </div>
+                  <Button type="button" className="bg-violet-500 text-white hover:bg-violet-500/80">
+                    <File className="size-4 mr-2" />
+                    Criar pacote e gerar EDI
+                  </Button>
                 </DialogContent>
               </Dialog>
             ))}

@@ -17,7 +17,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '../ui/chart'
-import { Skeleton } from '../ui/skeleton'
 
 export const description = 'An area chart with gradient fill'
 
@@ -41,31 +40,15 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-interface WaveChartProps {
-  hasLoadingTrafficData: boolean
-}
-
-export function WaveChart({ hasLoadingTrafficData }: WaveChartProps) {
+export function WaveChart() {
   return (
     <Card>
       <CardHeader className="gap-0">
         <CardTitle className="flex items-center gap-2 text-lg">
-          {hasLoadingTrafficData ? (
-            <Skeleton className="h-4 w-40" />
-          ) : (
-            <>
-              <Shell className="size-4" />
-              Alteração de maré - Alta/Baixa
-            </>
-          )}
+          <Shell className="size-4" />
+          Altura das ondas - Alta/Baixa
         </CardTitle>
-        <CardDescription>
-          {hasLoadingTrafficData ? (
-            <Skeleton className="h-4 w-full" />
-          ) : (
-            'Acompanhamento de alteração para maré'
-          )}
-        </CardDescription>
+        <CardDescription>Mudanças consideráveis nas alturas</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>

@@ -1,6 +1,6 @@
 'use client'
 
-import { TrendingUp } from 'lucide-react'
+import { Thermometer } from 'lucide-react'
 import {
   Label,
   PolarGrid,
@@ -9,7 +9,13 @@ import {
   RadialBarChart,
 } from 'recharts'
 
-import { Card, CardContent, CardFooter } from '../ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
 import { ChartConfig, ChartContainer } from '../ui/chart'
 
 export const description = 'A radial chart with text'
@@ -31,6 +37,16 @@ const chartConfig = {
 export function RadialBarGraph() {
   return (
     <Card className="flex flex-col">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <>
+            <Thermometer className="size-4" />
+            Temperatura - Alta/Baixa
+          </>
+        </CardTitle>
+        <CardDescription>Análise de temperatura diária</CardDescription>
+      </CardHeader>
+
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
@@ -85,14 +101,6 @@ export function RadialBarGraph() {
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none text-emerald-500">
-          10% mais comparado a 2h atrás <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Mostrando a temperatura média diária
-        </div>
-      </CardFooter>
     </Card>
   )
 }

@@ -20,4 +20,5 @@ export interface InfosCardProps {
   forecast: Forecast;
   alterado?: string;
   duv: string;
+  delay: string
 }

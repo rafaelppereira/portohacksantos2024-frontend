@@ -9,7 +9,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  // CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -21,15 +20,18 @@ interface CardInfoProps {
 export function CardInfos({ infoCard }: CardInfoProps) {
   return (
     <Card
-      className={`${infoCard.alterado && "border-yellow-300 border-2"} transition-all hover:scale-[.95]`}
+      className={`${infoCard.alterado && "border-2 border-yellow-300"} transition-all hover:scale-[.95]`}
     >
       <CardHeader>
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col items-start gap-2">
-            <CardTitle title={infoCard.arrivalNotice.shipName} className="text-md truncate w-32 text-left">
+            <CardTitle
+              title={infoCard.arrivalNotice.shipName}
+              className="text-md w-32 truncate text-left"
+            >
               {infoCard.arrivalNotice.shipName}
             </CardTitle>
-            <CardDescription className="dark:text-zinc-300 text-zinc-500">
+            <CardDescription className="text-zinc-500 dark:text-zinc-300">
               {infoCard.arrivalNotice.RAP}
             </CardDescription>
           </div>
@@ -63,6 +65,14 @@ export function CardInfos({ infoCard }: CardInfoProps) {
           </div>
           <p>{infoCard.duv}</p>
         </div>
+
+        {/* <div className="flex items-center justify-start gap-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <FileCheck2Icon className="size-3" />
+            <h2>DELAY:</h2>
+          </div>
+          <p>{infoCard.delay}</p>
+        </div> */}
       </CardContent>
     </Card>
   );
